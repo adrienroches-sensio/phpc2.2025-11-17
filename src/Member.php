@@ -2,24 +2,25 @@
 
 class Member
 {
-    private static int $count = 0;
+    private static array $counter = [];
 
     public function __construct(
         public string $login,
         public string $password,
         public int $age
     ) {
-        self::$count++;
+        self::$counter[static::class] ??= 0;
+        self::$counter[static::class]++;
     }
 
     public function __destruct()
     {
-        self::$count--;
+        self::$counter[static::class]--;
     }
 
     public static function getCount(): int
     {
-        return self::$count;
+        return self::$counter[static::class] ?? 0;
     }
 
     public function auth(string $login, string $password): bool
