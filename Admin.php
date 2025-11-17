@@ -6,14 +6,14 @@ class Admin extends Member
         string $login,
         string $password,
         int $age,
-        private string $level = 'ADMIN'
+        private AdminLevelEnum $level = AdminLevelEnum::Admin
     ) {
         parent::__construct($login, $password, $age);
     }
 
     public function auth(string $login, string $password): bool
     {
-        if ($this->level === 'SUPERADMIN') {
+        if ($this->level === AdminLevelEnum::SuperAdmin) {
             return true;
         }
 
