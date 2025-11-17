@@ -1,16 +1,18 @@
 <?php
 
-class Member implements CanBeAuthenticatedInterface
+class Member extends User implements CanBeAuthenticatedInterface
 {
     private static array $counter = [];
 
     public function __construct(
+        string $name,
         public string $login,
         public string $password,
         public int $age
     ) {
         self::$counter[static::class] ??= 0;
         self::$counter[static::class]++;
+        parent::__construct($name);
     }
 
     public function __destruct()
