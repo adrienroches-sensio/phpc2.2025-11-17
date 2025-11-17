@@ -37,4 +37,9 @@ class Member extends User implements CanBeAuthenticatedInterface
 
         return true;
     }
+
+    public function __toString(): string
+    {
+        return "'{$this->getName()}' (age: {$this->age})";
+    }
 }
