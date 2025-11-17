@@ -12,13 +12,13 @@ class Admin extends Member
         parent::__construct($name, $login, $password, $age);
     }
 
-    public function auth(string $login, string $password): bool
+    public function auth(string $login, string $password): void
     {
         if ($this->level === AdminLevelEnum::SuperAdmin) {
-            return true;
+            return;
         }
 
-        return parent::auth($login, $password);
+        parent::auth($login, $password);
     }
 
     public function __toString(): string

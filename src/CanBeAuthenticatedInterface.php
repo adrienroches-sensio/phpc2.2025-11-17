@@ -2,5 +2,9 @@
 
 interface CanBeAuthenticatedInterface
 {
-    public function auth(string $login, string $password): bool;
+    /**
+     * @throws AuthenticationFailedException If login is incorrect.
+     * @throws AuthenticationFailedException If password is incorrect.
+     */
+    public function auth(string $login, string $password): void;
 }

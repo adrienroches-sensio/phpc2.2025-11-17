@@ -25,17 +25,15 @@ class Member extends User implements CanBeAuthenticatedInterface
         return self::$counter[static::class] ?? 0;
     }
 
-    public function auth(string $login, string $password): bool
+    public function auth(string $login, string $password): void
     {
         if ($this->login !== $login) {
-            return false;
+            throw AuthenticationFailedException::invalidLogin($login);
         }
 
         if ($this->password !== $password) {
-            return false;
+            throw AuthenticationFailedException::invalidPassword($login);
         }
-
-        return true;
     }
 
     public function __toString(): string
