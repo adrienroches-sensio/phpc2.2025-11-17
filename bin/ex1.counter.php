@@ -1,11 +1,9 @@
 <?php
 
-use Membership\Admin;
-use Membership\Member;
+use App\Membership\Admin;
+use App\Membership\Member;
 
-require_once __DIR__ . '/../src/Member.php';
-require_once __DIR__ . '/../src/AdminLevelEnum.php';
-require_once __DIR__ . '/../src/Admin.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 echo 'Member count : ' . Member::getCount() . PHP_EOL; // Should be 0
 echo 'Admin  count : ' . Admin::getCount() . PHP_EOL; // Should be 0

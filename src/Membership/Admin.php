@@ -1,6 +1,6 @@
 <?php
 
-namespace Membership;
+namespace App\Membership;
 
 class Admin extends Member
 {

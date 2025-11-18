@@ -1,13 +1,9 @@
 <?php
 
-use Membership\Admin;
-use Membership\Member;
+use App\Membership\Admin;
+use App\Membership\Member;
 
-require_once __DIR__ . '/../src/User.php';
-require_once __DIR__ . '/../src/CanBeAuthenticatedInterface.php';
-require_once __DIR__ . '/../src/Member.php';
-require_once __DIR__ . '/../src/AdminLevelEnum.php';
-require_once __DIR__ . '/../src/Admin.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $member1 = new Member('name_admin', 'admin', 'admin', 32);
 $admin1 = new Admin('name_superadmin', 'superadmin', 'superadmin', 56);

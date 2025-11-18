@@ -1,10 +1,10 @@
 <?php
 
-namespace Membership;
+namespace App\Membership;
 
-use AuthenticationFailedException;
-use CanBeAuthenticatedInterface;
-use User;
+use App\AuthenticationFailedException;
+use App\CanBeAuthenticatedInterface;
+use App\User;
 
 class Member extends User implements CanBeAuthenticatedInterface
 {

@@ -1,5 +1,10 @@
 <?php
 
+namespace App;
+
+use RuntimeException;
+use Throwable;
+
 class AuthenticationFailedException extends RuntimeException
 {
     public const INVALID_LOGIN_CODE = 1;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Membership;
+namespace App\Membership;
 
 enum AdminLevelEnum
 {
