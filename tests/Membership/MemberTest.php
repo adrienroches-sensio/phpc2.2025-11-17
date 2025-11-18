@@ -4,11 +4,19 @@ namespace Test\Membership;
 
 use App\Membership\Member;
 use Faker\Factory;
+use Faker\Generator;
 use PHPUnit\Framework\TestCase;
 use function random_int;
 
 class MemberTest extends TestCase
 {
+    private Generator $faker;
+
+    protected function setUp(): void
+    {
+        $this->faker = Factory::create();
+    }
+
     public function testCounterIsIncremented(): void
     {
         // Preconditions
@@ -47,12 +55,10 @@ class MemberTest extends TestCase
         string|null $name = null,
         int|null $age = null,
     ): Member {
-        $faker = Factory::create();
-
         return new Member(
-            $name ?? $faker->name(),
-            $faker->userName(),
-            $faker->password(),
+            $name ?? $this->faker->name(),
+            $this->faker->userName(),
+            $this->faker->password(),
             $age ?? random_int(22, 89)
         );
     }
