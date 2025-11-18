@@ -1,0 +1,89 @@
+TL;DR:
+Use `Closure` instead of `callable` because it is "scope-safe".
+A `Closure` is created from an anonymous function or using the `->(...)` syntax.
+
+<?php
+
+$multiplier = 12;
+
+/*
+$callable = function(int $int) use ($multiplier): int {
+	return $multiplier * $int;
+};
+
+$callable = fn(int $int): int => $int * $multiplier;
+*/
+
+class Multiply
+{
+	public function __construct(private int $multiplier) {}
+
+	public function __invoke(int $int): int
+	{
+		return $int * $this->multiplier;
+	}
+}
+
+$callable = (new Multiply($multiplier))(...);
+var_dump($callable);
+
+$multiplier = 5;
+
+echo $callable(10);
+
+//----
+
+function namedFunction() {
+	die('coucou');
+}
+
+//namedFunction();
+
+//'namedFunction'();
+
+//----
+
+$anonymous = function (string $hello) {
+	echo $hello . ' - ' . PHP_EOL;
+};
+//var_dump($anonymous);
+
+$names = [
+	'Jean',
+	'louis',
+];
+//array_walk($names, $anonymous);
+
+//----
+
+function requireCallable(callable $callback) {
+	// do something
+	$callback('plop');
+	// do something else
+}
+//requireCallable($anonymous);
+
+//----
+
+class Plop
+{
+	public function hello(string $world)
+	{
+		echo $world . PHP_EOL;
+	}
+}
+
+$plop = new Plop();
+//array_walk($names, [$plop, 'hello']);
+
+$callables = [
+	namedFunction(...),
+	function () {},
+	fn() => 'return',
+	$plop->hello(...),
+];
+
+foreach ($callables as $callable) {
+	var_dump($callable);
+	echo 'is a callable ?   ' . (is_callable($callable) ? 'yes' : 'no') . PHP_EOL;
+}
