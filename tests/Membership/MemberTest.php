@@ -2,6 +2,7 @@
 
 namespace Test\Membership;
 
+use App\AuthenticationFailedException;
 use App\Membership\Member;
 use Faker\Factory;
 use Faker\Generator;
@@ -55,7 +56,7 @@ class MemberTest extends TestCase
     {
         // Arrange
         $member = $this->createMember(
-            username: 'john.smith',
+            login: 'john.smith',
             password: 'some-secret-password',
         );
 
@@ -66,15 +67,47 @@ class MemberTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
+    public function testCannotBeAuthenticatedIfWrongLogin(): void
+    {
+        // Arrange
+        $member = $this->createMember(
+            login: 'john.smith',
+            password: 'some-secret-password',
+        );
+
+        // Assert
+        $this->expectException(AuthenticationFailedException::class);
+        $this->expectExceptionCode(AuthenticationFailedException::INVALID_LOGIN_CODE);
+
+        // Act
+        $member->auth('wrong-login', 'some-secret-password');
+    }
+
+    public function testCannotBeAuthenticatedIfWrongPassword(): void
+    {
+        // Arrange
+        $member = $this->createMember(
+            login: 'john.smith',
+            password: 'some-secret-password',
+        );
+
+        // Assert
+        $this->expectException(AuthenticationFailedException::class);
+        $this->expectExceptionCode(AuthenticationFailedException::INVALID_PASSWORD_CODE);
+
+        // Act
+        $member->auth('john.smith', 'wrong-password');
+    }
+
     private function createMember(
         string|null $name = null,
-        string|null $username = null,
+        string|null $login = null,
         string|null $password = null,
         int|null $age = null,
     ): Member {
         return new Member(
             $name ?? $this->faker->name(),
-            $username ?? $this->faker->userName(),
+            $login ?? $this->faker->userName(),
             $password ?? $this->faker->password(),
             $age ?? random_int(22, 89)
         );
