@@ -1,5 +1,11 @@
 <?php
 
+namespace Membership;
+
+use AuthenticationFailedException;
+use CanBeAuthenticatedInterface;
+use User;
+
 class Member extends User implements CanBeAuthenticatedInterface
 {
     private static array $counter = [];

@@ -1,5 +1,7 @@
 <?php
 
+namespace Membership;
+
 enum AdminLevelEnum
 {
     case Admin;

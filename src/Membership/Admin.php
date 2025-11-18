@@ -1,5 +1,7 @@
 <?php
 
+namespace Membership;
+
 class Admin extends Member
 {
     public function __construct(

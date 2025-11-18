@@ -1,5 +1,8 @@
 <?php
 
+use Membership\Admin;
+use Membership\Member;
+
 require_once __DIR__ . '/../src/User.php';
 require_once __DIR__ . '/../src/CanBeAuthenticatedInterface.php';
 require_once __DIR__ . '/../src/Member.php';
