@@ -51,14 +51,31 @@ class MemberTest extends TestCase
         $this->assertSame("'John Smith' (age: 60)", $memberAsString);
     }
 
+    public function testCanBeAuthenticated(): void
+    {
+        // Arrange
+        $member = $this->createMember(
+            username: 'john.smith',
+            password: 'some-secret-password',
+        );
+
+        // Act
+        $member->auth('john.smith', 'some-secret-password');
+
+        // Assert
+        $this->expectNotToPerformAssertions();
+    }
+
     private function createMember(
         string|null $name = null,
+        string|null $username = null,
+        string|null $password = null,
         int|null $age = null,
     ): Member {
         return new Member(
             $name ?? $this->faker->name(),
-            $this->faker->userName(),
-            $this->faker->password(),
+            $username ?? $this->faker->userName(),
+            $password ?? $this->faker->password(),
             $age ?? random_int(22, 89)
         );
     }
