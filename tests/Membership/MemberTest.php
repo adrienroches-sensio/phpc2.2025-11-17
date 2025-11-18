@@ -13,15 +13,20 @@ class MemberTest extends TestCase
     {
         $this->assertSame(0, Member::getCount());
 
-        $faker = Factory::create();
-
-        $member1 = new Member($faker->name(), $faker->userName(), $faker->password(), random_int(22, 89));
-        $member2 = new Member($faker->name(), $faker->userName(), $faker->password(), random_int(22, 89));
+        $member1 = $this->createMember();
+        $member2 = $this->createMember();
 
         $this->assertSame(2, Member::getCount());
 
         unset($member1);
 
         $this->assertSame(1, Member::getCount());
+    }
+
+    private function createMember(): Member
+    {
+        $faker = Factory::create();
+
+        return new Member($faker->name(), $faker->userName(), $faker->password(), random_int(22, 89));
     }
 }
