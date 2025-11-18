@@ -3,7 +3,9 @@
 namespace Test\Membership;
 
 use App\Membership\Member;
+use Faker\Factory;
 use PHPUnit\Framework\TestCase;
+use function random_int;
 
 class MemberTest extends TestCase
 {
@@ -11,8 +13,10 @@ class MemberTest extends TestCase
     {
         $this->assertSame(0, Member::getCount());
 
-        $member1 = new Member('John', 'john', '123456', 12);
-        $member2 = new Member('Smith', 'smith', 'kjkljsklajd', 65);
+        $faker = Factory::create();
+
+        $member1 = new Member($faker->name(), $faker->userName(), $faker->password(), random_int(22, 89));
+        $member2 = new Member($faker->name(), $faker->userName(), $faker->password(), random_int(22, 89));
 
         $this->assertSame(2, Member::getCount());
 
