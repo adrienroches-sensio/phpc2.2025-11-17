@@ -31,18 +31,6 @@ class Member implements CanBeAuthenticatedInterface
         return self::$counter[static::class] ?? 0;
     }
 
-    #[Deprecated]
-    public function getName(): string
-    {
-        return $this->user->getName();
-    }
-
-    #[Deprecated]
-    public function setName(string $name): void
-    {
-        $this->user->setName($name);
-    }
-
     public function auth(string $login, string $password): void
     {
         if ($this->login !== $login) {
@@ -56,6 +44,6 @@ class Member implements CanBeAuthenticatedInterface
 
     public function __toString(): string
     {
-        return "'{$this->getName()}' (age: {$this->age})";
+        return "'{$this->user->getName()}' (age: {$this->age})";
     }
 }
