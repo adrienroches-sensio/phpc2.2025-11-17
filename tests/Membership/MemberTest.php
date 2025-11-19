@@ -6,9 +6,11 @@ use App\AuthenticationFailedException;
 use App\Membership\Member;
 use Faker\Factory;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use function random_int;
 
+#[CoversClass(Member::class)]
 class MemberTest extends TestCase
 {
     private Generator $faker;

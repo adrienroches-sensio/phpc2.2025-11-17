@@ -4,9 +4,11 @@ namespace Test\Membership;
 
 use App\Membership\AdminLevelEnum;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(AdminLevelEnum::class)]
 class AdminLevelEnumTest extends TestCase
 {
     public function testAllAdminLevelsHaveALabel(): void
