@@ -26,7 +26,7 @@ class EmulatedDatabaseMemberCollection implements IteratorAggregate
                     new User($this->faker->name()),
                     $this->faker->userName(),
                     $this->faker->password(),
-                    random_int(25, 55),
+                    random_int(30, 40),
                 );
             }
         }

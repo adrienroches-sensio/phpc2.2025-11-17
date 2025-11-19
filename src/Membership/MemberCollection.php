@@ -2,6 +2,8 @@
 
 namespace App\Membership;
 
+use App\Membership\Premium\AgeRule;
+use App\Membership\Premium\LuckRule;
 use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
@@ -17,17 +19,24 @@ class MemberCollection implements IteratorAggregate
     ) {
     }
 
-    public function getPremiumMembers(): array
+    public function getPremiumMembers(): PremiumMemberCollection
     {
-        $premiumMembers = [];
+        return new PremiumMemberCollection(
+            $this,
+            function (Member $member) {
+                $result = true;
+                $rules = [
+                    new AgeRule(),
+                    new LuckRule(),
+                ];
 
-        foreach ($this->members as $member) {
-            if ($member->isPremium()) {
-                $premiumMembers[] = $member;
+                foreach ($rules as $rule) {
+                    $result = $result && $rule($member);
+                }
+
+                return $result;
             }
-        }
-
-        return $premiumMembers;
+        );
     }
 
     public function getIterator(): Traversable
