@@ -5,6 +5,7 @@ namespace Test\Membership;
 use App\AuthenticationFailedException;
 use App\Membership\Admin;
 use App\Membership\AdminLevelEnum;
+use App\Membership\Member;
 use App\User;
 use Faker\Factory;
 use Faker\Generator;
@@ -128,10 +129,12 @@ class AdminTest extends TestCase
         AdminLevelEnum $level = AdminLevelEnum::Admin
     ): Admin {
         return new Admin(
-            new User($name ?? $this->faker->name()),
-            $login ?? $this->faker->userName(),
-            $password ?? $this->faker->password(),
-            $age ?? random_int(22, 89),
+            new Member(
+                new User($name ?? $this->faker->name()),
+                $login ?? $this->faker->userName(),
+                $password ?? $this->faker->password(),
+                $age ?? random_int(22, 89),
+            ),
             $level,
         );
     }

@@ -2,18 +2,26 @@
 
 namespace App\Membership;
 
-use App\User;
+use App\CanBeAuthenticatedInterface;
+use App\ObjectCounter;
 
-class Admin extends Member
+class Admin implements CanBeAuthenticatedInterface
 {
     public function __construct(
-        User $user,
-        string $login,
-        string $password,
-        int $age,
+        private Member $member,
         private AdminLevelEnum $level = AdminLevelEnum::Admin
     ) {
-        parent::__construct($user, $login, $password, $age);
+        ObjectCounter::add(static::class);
+    }
+
+    public function __destruct()
+    {
+        ObjectCounter::remove(static::class);
+    }
+
+    public static function getCount(): int
+    {
+        return ObjectCounter::getCount(static::class);
     }
 
     public function auth(string $login, string $password): void
@@ -22,13 +30,11 @@ class Admin extends Member
             return;
         }
 
-        parent::auth($login, $password);
+        $this->member->auth($login, $password);
     }
 
     public function __toString(): string
     {
-        $parent = parent::__toString();
-
-        return "{$parent} with '{$this->level->label()}' level";
+        return "{$this->member} with '{$this->level->label()}' level";
     }
 }

@@ -4,31 +4,28 @@ namespace App\Membership;
 
 use App\AuthenticationFailedException;
 use App\CanBeAuthenticatedInterface;
+use App\ObjectCounter;
 use App\User;
-use Deprecated;
 
 class Member implements CanBeAuthenticatedInterface
 {
-    private static array $counter = [];
-
     public function __construct(
         private User $user,
         public string $login,
         public string $password,
         public int $age
     ) {
-        self::$counter[static::class] ??= 0;
-        self::$counter[static::class]++;
+        ObjectCounter::add(static::class);
     }
 
     public function __destruct()
     {
-        self::$counter[static::class]--;
+        ObjectCounter::remove(static::class);
     }
 
     public static function getCount(): int
     {
-        return self::$counter[static::class] ?? 0;
+        return ObjectCounter::getCount(static::class);
     }
 
     public function auth(string $login, string $password): void
