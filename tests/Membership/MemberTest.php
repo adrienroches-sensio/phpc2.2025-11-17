@@ -4,6 +4,7 @@ namespace Test\Membership;
 
 use App\AuthenticationFailedException;
 use App\Membership\Member;
+use App\User;
 use Faker\Factory;
 use Faker\Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -108,7 +109,7 @@ class MemberTest extends TestCase
         int|null $age = null,
     ): Member {
         return new Member(
-            $name ?? $this->faker->name(),
+            new User($name ?? $this->faker->name()),
             $login ?? $this->faker->userName(),
             $password ?? $this->faker->password(),
             $age ?? random_int(22, 89),

@@ -2,16 +2,18 @@
 
 namespace App\Membership;
 
+use App\User;
+
 class Admin extends Member
 {
     public function __construct(
-        string $name,
+        User $user,
         string $login,
         string $password,
         int $age,
         private AdminLevelEnum $level = AdminLevelEnum::Admin
     ) {
-        parent::__construct($name, $login, $password, $age);
+        parent::__construct($user, $login, $password, $age);
     }
 
     public function auth(string $login, string $password): void

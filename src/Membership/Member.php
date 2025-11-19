@@ -5,20 +5,20 @@ namespace App\Membership;
 use App\AuthenticationFailedException;
 use App\CanBeAuthenticatedInterface;
 use App\User;
+use Deprecated;
 
-class Member extends User implements CanBeAuthenticatedInterface
+class Member implements CanBeAuthenticatedInterface
 {
     private static array $counter = [];
 
     public function __construct(
-        string $name,
+        private User $user,
         public string $login,
         public string $password,
         public int $age
     ) {
         self::$counter[static::class] ??= 0;
         self::$counter[static::class]++;
-        parent::__construct($name);
     }
 
     public function __destruct()
@@ -29,6 +29,18 @@ class Member extends User implements CanBeAuthenticatedInterface
     public static function getCount(): int
     {
         return self::$counter[static::class] ?? 0;
+    }
+
+    #[Deprecated]
+    public function getName(): string
+    {
+        return $this->user->getName();
+    }
+
+    #[Deprecated]
+    public function setName(string $name): void
+    {
+        $this->user->setName($name);
     }
 
     public function auth(string $login, string $password): void

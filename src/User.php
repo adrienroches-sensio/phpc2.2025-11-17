@@ -4,7 +4,7 @@ namespace App;
 
 use Stringable;
 
-abstract class User implements Stringable
+class User implements Stringable
 {
     public function __construct(
         private string $name,
@@ -21,5 +21,8 @@ abstract class User implements Stringable
         $this->name = $name;
     }
 
-    abstract public function __toString(): string;
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }
