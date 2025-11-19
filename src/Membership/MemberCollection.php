@@ -15,7 +15,7 @@ class MemberCollection implements IteratorAggregate
      * @param Member[] $members
      */
     public function __construct(
-        private iterable $members,
+        private readonly iterable $members,
     ) {
     }
 

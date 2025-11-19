@@ -6,11 +6,12 @@ use App\AuthenticationFailedException;
 use App\CanBeAuthenticatedInterface;
 use App\ObjectCounter;
 use App\User;
+use Stringable;
 
-class Member implements CanBeAuthenticatedInterface
+class Member implements CanBeAuthenticatedInterface, Stringable
 {
     public function __construct(
-        private User $user,
+        private readonly User $user,
         public string $login,
         public string $password,
         public int $age

@@ -10,8 +10,8 @@ use Traversable;
 class PremiumMemberCollection implements IteratorAggregate, Countable
 {
     public function __construct(
-        private MemberCollection $members,
-        private Closure $rule,
+        private readonly MemberCollection $members,
+        private readonly Closure $rule,
     ) {
     }
 

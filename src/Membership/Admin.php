@@ -5,11 +5,11 @@ namespace App\Membership;
 use App\CanBeAuthenticatedInterface;
 use App\ObjectCounter;
 
-class Admin implements CanBeAuthenticatedInterface
+class Admin implements CanBeAuthenticatedInterface, \Stringable
 {
     public function __construct(
-        private Member $member,
-        private AdminLevelEnum $level = AdminLevelEnum::Admin
+        private readonly Member $member,
+        private readonly AdminLevelEnum $level = AdminLevelEnum::Admin
     ) {
         ObjectCounter::add(static::class);
     }

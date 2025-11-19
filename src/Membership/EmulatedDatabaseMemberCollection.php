@@ -13,8 +13,8 @@ class EmulatedDatabaseMemberCollection implements IteratorAggregate
     private array $members = [];
 
     public function __construct(
-        private Generator $faker,
-        private int       $total = 10,
+        private readonly Generator $faker,
+        private readonly int       $total = 10,
     ) {
     }
 
