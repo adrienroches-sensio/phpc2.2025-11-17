@@ -1,21 +1,22 @@
 <?php
 
 use App\Membership\Member;
+use App\Membership\MemberCollection;
 use App\User;
 use PHPUnit\Event\Runtime\PHP;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-/**
- * @param Member[] $members
- */
-function listPremium(array $members): void {
-    $premiumMembers = [];
+function listAll(iterable $members): void
+{
+    echo 'La liste des membres :'.PHP_EOL;
     foreach ($members as $member) {
-        if ($member->age >= 30 && $member->age <= 40) { // Compte premium
-            $premiumMembers[] = $member;
-        }
+        echo $member.PHP_EOL;
     }
+}
+
+function listPremium(MemberCollection $members): void {
+    $premiumMembers = $members->getPremiumMembers();
 
     echo 'La liste des membres premium (total: '.count($premiumMembers).'):'.PHP_EOL;
 
@@ -24,13 +25,11 @@ function listPremium(array $members): void {
     }
 }
 
-function getTotalAgePremium(array $members): void
+function getTotalAgePremium(MemberCollection $members): void
 {
     $totalAgePremium = 0;
-    foreach ($members as $member) {
-        if ($member->age >= 30 && $member->age <= 40) {
-            $totalAgePremium += $member->age;
-        }
+    foreach ($members->getPremiumMembers() as $member) {
+        $totalAgePremium += $member->age;
     }
 
     echo "Age total des membres premium: {$totalAgePremium}" . PHP_EOL;
@@ -43,6 +42,10 @@ $members = [
     new Member(new User('Jane'), 'member4', 'password2', 60),
 ];
 
-listPremium($members);
+$memberCollection = new MemberCollection($members);
+
+//listAll($memberCollection);
 echo PHP_EOL;
-getTotalAgePremium($members);
+listPremium($memberCollection);
+echo PHP_EOL;
+getTotalAgePremium($memberCollection);

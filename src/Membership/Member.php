@@ -39,6 +39,11 @@ class Member implements CanBeAuthenticatedInterface
         }
     }
 
+    public function isPremium(): bool
+    {
+        return $this->age >= 30 && $this->age <= 40;
+    }
+
     public function __toString(): string
     {
         return "'{$this->user->getName()}' (age: {$this->age})";
