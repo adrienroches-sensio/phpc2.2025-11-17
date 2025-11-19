@@ -3,13 +3,14 @@
 namespace Test\Membership;
 
 use App\AuthenticationFailedException;
-use App\Membership\Member;
+use App\Membership\Admin;
+use App\Membership\AdminLevelEnum;
 use Faker\Factory;
 use Faker\Generator;
 use PHPUnit\Framework\TestCase;
 use function random_int;
 
-class MemberTest extends TestCase
+class AdminTest extends TestCase
 {
     private Generator $faker;
 
@@ -21,47 +22,48 @@ class MemberTest extends TestCase
     public function testCounterIsIncremented(): void
     {
         // Preconditions
-        $this->assertSame(0, Member::getCount());
+        $this->assertSame(0, Admin::getCount());
 
         // Arrange + Act 1
-        $member1 = $this->createMember();
-        $member2 = $this->createMember();
+        $admin1 = $this->createAdmin();
+        $admin2 = $this->createAdmin();
 
         // Assert 1
-        $this->assertSame(2, Member::getCount());
+        $this->assertSame(2, Admin::getCount());
 
         // Arrange + Act 2
-        unset($member1);
+        unset($admin1);
 
         // Assert 2
-        $this->assertSame(1, Member::getCount());
+        $this->assertSame(1, Admin::getCount());
     }
 
-    public function testCanBeCastedToString(): void
+    public function testAuthIsByPassedIfSuperAdmin(): void
     {
         // Arrange
-        $member = $this->createMember(
-            name: 'John Smith',
-            age: 60,
+        $admin = $this->createAdmin(
+            login: 'john.smith',
+            password: 'some-secret-password',
+            level: AdminLevelEnum::SuperAdmin
         );
 
         // Act
-        $memberAsString = (string) $member;
+        $admin->auth('wrong-login', 'wrong-password');
 
         // Assert
-        $this->assertSame("'John Smith' (age: 60)", $memberAsString);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testCanBeAuthenticated(): void
     {
         // Arrange
-        $member = $this->createMember(
+        $admin = $this->createAdmin(
             login: 'john.smith',
             password: 'some-secret-password',
         );
 
         // Act
-        $member->auth('john.smith', 'some-secret-password');
+        $admin->auth('john.smith', 'some-secret-password');
 
         // Assert
         $this->expectNotToPerformAssertions();
@@ -70,7 +72,7 @@ class MemberTest extends TestCase
     public function testCannotBeAuthenticatedIfWrongLogin(): void
     {
         // Arrange
-        $member = $this->createMember(
+        $admin = $this->createAdmin(
             login: 'john.smith',
             password: 'some-secret-password',
         );
@@ -80,13 +82,13 @@ class MemberTest extends TestCase
         $this->expectExceptionCode(AuthenticationFailedException::INVALID_LOGIN_CODE);
 
         // Act
-        $member->auth('wrong-login', 'some-secret-password');
+        $admin->auth('wrong-login', 'some-secret-password');
     }
 
     public function testCannotBeAuthenticatedIfWrongPassword(): void
     {
         // Arrange
-        $member = $this->createMember(
+        $admin = $this->createAdmin(
             login: 'john.smith',
             password: 'some-secret-password',
         );
@@ -96,20 +98,38 @@ class MemberTest extends TestCase
         $this->expectExceptionCode(AuthenticationFailedException::INVALID_PASSWORD_CODE);
 
         // Act
-        $member->auth('john.smith', 'wrong-password');
+        $admin->auth('john.smith', 'wrong-password');
     }
 
-    private function createMember(
+    public function testCanBeCastedToString(): void
+    {
+        // Arrange
+        $admin = $this->createAdmin(
+            name: 'John Smith',
+            age: 60,
+            level: AdminLevelEnum::SuperAdmin
+        );
+
+        // Act
+        $adminAsString = (string) $admin;
+
+        // Assert
+        $this->assertSame("'John Smith' (age: 60) with 'Super Admin 3000 Giga plus' level", $adminAsString);
+    }
+
+    private function createAdmin(
         string|null $name = null,
         string|null $login = null,
         string|null $password = null,
         int|null $age = null,
-    ): Member {
-        return new Member(
+        AdminLevelEnum $level = AdminLevelEnum::Admin
+    ): Admin {
+        return new Admin(
             $name ?? $this->faker->name(),
             $login ?? $this->faker->userName(),
             $password ?? $this->faker->password(),
             $age ?? random_int(22, 89),
+            $level,
         );
     }
 }
