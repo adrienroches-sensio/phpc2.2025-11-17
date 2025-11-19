@@ -44,7 +44,7 @@ $members = [
 
 $memberCollection = new MemberCollection($members);
 
-//listAll($memberCollection);
+listAll($memberCollection);
 echo PHP_EOL;
 listPremium($memberCollection);
 echo PHP_EOL;

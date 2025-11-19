@@ -2,7 +2,10 @@
 
 namespace App\Membership;
 
-class MemberCollection
+use IteratorAggregate;
+use Traversable;
+
+class MemberCollection implements IteratorAggregate
 {
     /**
      * @param Member[] $members
@@ -23,5 +26,10 @@ class MemberCollection
         }
 
         return $premiumMembers;
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new \ArrayIterator($this->members);
     }
 }
