@@ -1,8 +1,10 @@
 <?php
 
+use App\Membership\EmulatedDatabaseMemberCollection;
 use App\Membership\Member;
 use App\Membership\MemberCollection;
 use App\User;
+use Faker\Factory;
 use PHPUnit\Event\Runtime\PHP;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -35,16 +37,19 @@ function getTotalAgePremium(MemberCollection $members): void
     echo "Age total des membres premium: {$totalAgePremium}" . PHP_EOL;
 }
 
-$members = [
-    new Member(new User('John'), 'member1', 'password1', 30),
-    new Member(new User('Smith'), 'member2', 'password1', 32),
-    new Member(new User('Plop'), 'member3', 'password1', 29),
-    new Member(new User('Jane'), 'member4', 'password2', 60),
-];
+//$members = [
+//    new Member(new User('John'), 'member1', 'password1', 30),
+//    new Member(new User('Smith'), 'member2', 'password1', 32),
+//    new Member(new User('Plop'), 'member3', 'password1', 29),
+//    new Member(new User('Jane'), 'member4', 'password2', 60),
+//];
 
-$memberCollection = new MemberCollection($members);
+$members = new EmulatedDatabaseMemberCollection(Factory::create());
+$memberCollection = new MemberCollection(
+    $members
+);
 
-listAll($memberCollection);
+listAll($members);
 echo PHP_EOL;
 listPremium($memberCollection);
 echo PHP_EOL;

@@ -2,8 +2,10 @@
 
 namespace App\Membership;
 
+use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
+use function is_array;
 
 class MemberCollection implements IteratorAggregate
 {
@@ -11,7 +13,7 @@ class MemberCollection implements IteratorAggregate
      * @param Member[] $members
      */
     public function __construct(
-        private array $members,
+        private iterable $members,
     ) {
     }
 
@@ -30,6 +32,6 @@ class MemberCollection implements IteratorAggregate
 
     public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->members);
+        return is_array($this->members) ? new ArrayIterator($this->members) : $this->members;
     }
 }
