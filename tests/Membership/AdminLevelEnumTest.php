@@ -3,6 +3,8 @@
 namespace Test\Membership;
 
 use App\Membership\AdminLevelEnum;
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AdminLevelEnumTest extends TestCase
@@ -14,5 +16,17 @@ class AdminLevelEnumTest extends TestCase
 
             $this->expectNotToPerformAssertions();
         }
+    }
+
+    public static function expectedLabelProvider(): Generator
+    {
+        yield 'Admin' => [AdminLevelEnum::Admin, 'Admin'];
+        yield 'Super Admin' => [AdminLevelEnum::SuperAdmin, 'Super Admin 3000 Giga plus'];
+    }
+
+    #[DataProvider('expectedLabelProvider')]
+    public function testLabelIsCorrect(AdminLevelEnum $level, string $expectedLabel): void
+    {
+        $this->assertSame($expectedLabel, $level->label());
     }
 }
